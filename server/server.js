@@ -34,15 +34,20 @@ app.get('/todos', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  User.find().then(
-    users => {
-      res.send({ users });
-    },
-    err => {
+  User.find()
+    .then(
+      users => {
+        res.send({ users });
+      },
+      err => {
+        res.sendStatus(404);
+        console.log(err);
+      }
+    )
+    .catch(err => {
       res.sendStatus(404);
       console.log(err);
-    }
-  );
+    });
 });
 
 app.get('/todo/', (req, res) => {
@@ -50,9 +55,15 @@ app.get('/todo/', (req, res) => {
   Todo.find({
     _id: req.query.id
   })
-    .then(doc => {
-      res.send(doc);
-    })
+    .then(
+      doc => {
+        res.send(doc);
+      },
+      err => {
+        res.sendStatus(404);
+        console.log(err);
+      }
+    )
     .catch(err => {
       res.sendStatus(404);
       console.log(err);
